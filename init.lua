@@ -14,7 +14,7 @@ end
 
 local diamond_capabs = minetest.registered_tools["default:pick_diamond"].tool_capabilities
 
--- instamine pick
+-- Instamine pick
 
 minetest.register_tool("special_picks:instamine_pick", {
 	description = ("Instamine Pick"),
@@ -39,7 +39,7 @@ minetest.register_craft({
 	}
 })
 
---silk touch pick
+-- Silk touch pick
 
 minetest.register_tool("special_picks:silk_touch_pick", {
 	description = "Silk Touch Pickaxe",
@@ -115,7 +115,7 @@ minetest.register_craft({
 	}
 })
 
---fortune pick
+-- Fortune pick
 
 minetest.register_tool("special_picks:fortune_pick", {
 	description = "Fortune Pickaxe",
@@ -194,7 +194,7 @@ minetest.register_craft({
 
 
 
---fire pick
+-- Fire pick
 
 local capabs = table.copy(diamond_capabs)
 capabs.damage_groups.fleshy = capabs.damage_groups.fleshy+1
@@ -249,5 +249,93 @@ minetest.register_craft({
 		{"special_picks:hot_diamond", "special_picks:hot_diamond", "special_picks:hot_diamond"},
 		{"", "group:stick", ""},
 		{"", "group:stick", ""},
+	}
+})
+
+--Instamine fortune pick
+
+minetest.register_tool("special_picks:instafortune_pick", {
+	description = "Instamine Fortune Pickaxe",
+	inventory_image = "special_picks_instafortune_pick.png",
+	tool_capabilities = {
+		full_punch_interval = 0.9,
+		max_drop_level=3,
+		groupcaps={
+			cracky = {times={[1]=0, [2]=0, [3]=0}, uses=30, maxlevel=3},
+		},
+		damage_groups = {fleshy=5},
+	},
+	sound = {breaks = "default_tool_breaks"},
+})
+
+local nodes = {"technic:mineral_sulfur","technic:mineral_lead","technic:mineral_zinc","technic:mineral_chromium","default:mineral_silver","default:mineral_tin","default:mineral_copper", "moreores:mineral_silver","moreores:mineral_mithril","moreores:mineral_tin","default:stone_with_coal","default:stone_with_iron","default:stone_with_copper","default:stone_with_mese", "default:stone_with_gold","default:stone_with_diamond","technic:mineral_chromium","technic:mineral_zinc","technic:mineral_lead","technic:mineral_sulfur"}
+
+add_tool("special_picks:instafortune_pick", function(digger, oldnode)
+	local nam = oldnode.name
+	if not table_contains(nam, nodes) then
+		return
+	end
+	if math.random(4) == 1 then
+		return
+	end
+	local inv = digger:get_inventory()
+	if inv then
+		local items = minetest.get_node_drops(nam)
+		for _,item in ipairs(items) do
+			inv:add_item("main", item)
+		end
+	end
+end)
+
+minetest.register_craft({
+	output = "special_picks:instafortune_pick",
+	recipe = {
+		{"special_picks:fortune_pick", "default:pick_diamond", "special_picks:instamine_pick"},
+		{"", "", ""},
+		{"", "", ""},
+	}
+})
+
+--Instamine fire pick
+
+local capabs = table.copy(diamond_capabs)
+capabs.damage_groups.fleshy = capabs.damage_groups.fleshy+1
+
+minetest.register_tool("special_picks:instafire_pick", {
+	description = "Instamine Fire Pickaxe",
+	inventory_image = "special_picks_instafire_pick.png",
+	tool_capabilities = {
+		full_punch_interval = 0.9,
+		max_drop_level=3,
+		groupcaps={
+			cracky = {times={[1]=0, [2]=0, [3]=0}, uses=30, maxlevel=3},
+		},
+		damage_groups = {fleshy=5},
+	},
+	sound = {breaks = "default_tool_breaks"},
+})
+
+add_tool("special_picks:instafire_pick", function(digger, node)
+	local inv = digger:get_inventory()
+	if inv then
+		local nam = node.name
+		local drops = minetest.get_node_drops(nam)
+		local result = minetest.get_craft_result({method = "cooking", width = 1, items = drops})["item"]
+		if result:is_empty() then
+			return
+		end
+		for _,item in ipairs(drops) do
+			inv:remove_item("main", item)
+		end
+		inv:add_item("main", result)
+	end
+end)
+
+minetest.register_craft({
+	output = "special_picks:instafire_pick",
+	recipe = {
+		{"special_picks:fire_pick", "default:pick_diamond", "special_picks:instamine_pick"},
+		{"", "", ""},
+		{"", "", ""},
 	}
 })
