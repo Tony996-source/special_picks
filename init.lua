@@ -14,7 +14,7 @@ end
 
 local diamond_capabs = minetest.registered_tools["default:pick_diamond"].tool_capabilities
 
--- Instamine pick
+-- Instamine Pick
 
 minetest.register_tool("special_picks:instamine_pick", {
 	description = ("Instamine Pick"),
@@ -39,7 +39,7 @@ minetest.register_craft({
 	}
 })
 
--- Silk touch pick
+-- Silk Touch Pick
 
 minetest.register_tool("special_picks:silk_touch_pick", {
 	description = "Silk Touch Pickaxe",
@@ -115,7 +115,7 @@ minetest.register_craft({
 	}
 })
 
--- Fortune pick
+-- Fortune Pick
 
 minetest.register_tool("special_picks:fortune_pick", {
 	description = "Fortune Pickaxe",
@@ -194,7 +194,7 @@ minetest.register_craft({
 
 
 
--- Fire pick
+-- Fire Pick
 
 local capabs = table.copy(diamond_capabs)
 capabs.damage_groups.fleshy = capabs.damage_groups.fleshy+1
@@ -252,7 +252,7 @@ minetest.register_craft({
 	}
 })
 
---Instamine fortune pick
+--Instamine Fortune Pick
 
 minetest.register_tool("special_picks:instafortune_pick", {
 	description = "Instamine Fortune Pickaxe",
@@ -290,13 +290,13 @@ end)
 minetest.register_craft({
 	output = "special_picks:instafortune_pick",
 	recipe = {
-		{"special_picks:fortune_pick", "default:pick_diamond", "special_picks:instamine_pick"},
+		{"special_picks:fortune_pick", "special_picks:instamine_pick", ""},
 		{"", "", ""},
 		{"", "", ""},
 	}
 })
 
---Instamine fire pick
+--Instamine Fire Pick
 
 local capabs = table.copy(diamond_capabs)
 capabs.damage_groups.fleshy = capabs.damage_groups.fleshy+1
@@ -334,8 +334,63 @@ end)
 minetest.register_craft({
 	output = "special_picks:instafire_pick",
 	recipe = {
-		{"special_picks:fire_pick", "default:pick_diamond", "special_picks:instamine_pick"},
+		{"special_picks:fire_pick", "special_picks:instamine_pick", ""},
 		{"", "", ""},
 		{"", "", ""},
 	}
 })
+
+-- Unbreakable Pick
+
+local pick_unbreakable_toolcaps = {
+	full_punch_interval = 0.1,
+	max_drop_level = 3,
+	groupcaps = {
+		unbreakable = {times = {[1] = 0, [2] = 0, [3] = 0}, uses = 0, maxlevel = 3},
+        cracky = {times = {[1] = 2.0, [2] = 0, [3] = 0.50}, uses = 0, maxlevel = 3},
+	},
+	damage_groups = {fleshy = 5},
+}
+
+minetest.register_tool("special_picks:unbreakable_pick", {
+	description = ("Unbreakable Pickaxe"),
+	range = 20,
+	inventory_image = "special_picks_unbreakable_pick.png",
+	tool_capabilities = pick_unbreakable_toolcaps,
+})
+
+minetest.register_craft({
+	output = "special_picks:unbreakable_pick",
+	recipe = {
+		{"technic:composite_plate", "technic:mixed_metal_ingot", "technic:composite_plate"},
+		{"", "group:stick", ""},
+		{"", "group:stick", ""},
+	}
+})
+
+-- Instamine Unbreakable Pick
+
+minetest.register_tool("special_picks:instaunbreakable_pick", {
+	description = ("Unbreakable Instamine Pick"),
+	inventory_image = "special_picks_instaunbreakable_pick.png",
+	tool_capabilities = {
+		full_punch_interval = 0.9,
+		max_drop_level=3,
+		groupcaps={
+		unbreakable = {times = {[1] = 0, [2] = 0, [3] = 0}, uses = 0, maxlevel = 3},
+		cracky = {times = {[1] = 0, [2] = 0, [3] = 0}, uses = 0, maxlevel = 3},
+		},
+		damage_groups = {fleshy=5},
+	},
+	sound = {breaks = "default_tool_breaks"},
+})
+
+minetest.register_craft({
+	output = "special_picks:instaunbreakable_pick",
+	recipe = {
+		{"special_picks:instamine_pick", "special_picks:unbreakable_pick", ""},
+		{"", "", ""},
+		{"", "", ""},
+	}
+})
+
