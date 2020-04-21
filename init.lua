@@ -473,3 +473,86 @@ minetest.register_craft({
 		{"", "", ""},
 	}
 })
+
+-- Instamine Unbreakable Fortune Pick
+
+minetest.register_tool("special_picks:instaunbreakablefortune_pick", {
+	description = "Unbreakable instamine Fortune Pickaxe",
+	inventory_image = "special_picks_instaunbreakablefortune_pick.png",
+	tool_capabilities = {
+	full_punch_interval = 0.1,
+	max_drop_level = 3,
+	groupcaps = {
+        cracky = {times = {[1] = 0, [2] = 0, [3] = 0}, uses = 0, maxlevel = 3},
+	},
+	damage_groups = {fleshy = 5},
+}
+})
+
+local node = {"technic:mineral_sulfur","technic:mineral_lead","technic:mineral_zinc","technic:mineral_chromium","default:mineral_silver","default:mineral_tin","default:mineral_copper", "moreores:mineral_silver","moreores:mineral_mithril","moreores:mineral_tin","default:stone_with_coal","default:stone_with_iron","default:stone_with_copper","default:stone_with_mese", "default:stone_with_gold","default:stone_with_diamond","technic:mineral_chromium","technic:mineral_zinc","technic:mineral_lead","technic:mineral_sulfur","technic:mineral_uranium"}
+
+add_tool("special_picks:instaunbreakablefortune_pick", function(digger, oldnode)
+	local nam = oldnode.name
+	if not table_contains(nam, node) then
+		return
+	end
+	if math.random(6) == 1 then
+		return
+	end
+	local inv = digger:get_inventory()
+	if inv then
+		local items = minetest.get_node_drops(nam)
+		for _,item in ipairs(items) do
+			inv:add_item("main", item)
+		end
+	end
+end)
+
+minetest.register_craft({
+	output = "special_picks:instaunbreakablefortune_pick",
+	recipe = {
+		{"special_picks:fortune_pick", "special_picks:unbreakable_pick", "special_picks:instamine_pick"},
+		{"", "", ""},
+		{"", "", ""},
+	}
+})
+
+-- Instamine Unbreakable Fire Pick
+
+minetest.register_tool("special_picks:instaunbreakablefire_pick", {
+	description = "Unbreakable Fire Pickaxe",
+	inventory_image = "special_picks_instaunbreakablefire_pick.png",
+	tool_capabilities = {
+	full_punch_interval = 0.9,
+	max_drop_level=3,
+	groupcaps = {
+        cracky = {times = {[1] = 0, [2] = 0, [3] = 0}, uses = 0, maxlevel = 3},
+	},
+	damage_groups = {fleshy = 5},
+}
+})
+
+add_tool("special_picks:instaunbreakablefire_pick", function(digger, node)
+	local inv = digger:get_inventory()
+	if inv then
+		local nam = node.name
+		local drops = minetest.get_node_drops(nam)
+		local result = minetest.get_craft_result({method = "cooking", width = 1, items = drops})["item"]
+		if result:is_empty() then
+			return
+		end
+		for _,item in ipairs(drops) do
+			inv:remove_item("main", item)
+		end
+		inv:add_item("main", result)
+	end
+end)
+
+minetest.register_craft({
+	output = "special_picks:instaunbreakablefire_pick",
+	recipe = {
+		{"special_picks:fire_pick", "special_picks:unbreakable_pick", "special_picks:instamine_pick"},
+		{"", "", ""},
+		{"", "", ""},
+	}
+})
