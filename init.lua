@@ -520,7 +520,7 @@ minetest.register_craft({
 -- Instamine Unbreakable Fire Pick
 
 minetest.register_tool("special_picks:instaunbreakablefire_pick", {
-	description = "Unbreakable Fire Pickaxe",
+	description = "Instamine Unbreakable Fire Pickaxe",
 	inventory_image = "special_picks_instaunbreakablefire_pick.png",
 	tool_capabilities = {
 	full_punch_interval = 0.9,
