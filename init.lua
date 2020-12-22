@@ -150,9 +150,9 @@ minetest.register_craftitem("special_picks:fortune_diamond", {
 minetest.register_craft({
 	output = "special_picks:fortune_diamond",
 	recipe = {
-		{"moreores:silver_ingot", "moreores:mithril_ingot", "moreores:silver_ingot"},
+		{"default:gold_ingot", "default:copper_ingot", "default:gold_ingot"},
 		{"default:tin_ingot", "default:diamond", "default:tin_ingot"},
-		{"technic:wrought_iron_ingot", "moreores:mithril_ingot", "technic:wrought_iron_ingot"},
+		{"technic:wrought_iron_ingot", "default:copper_ingot", "technic:wrought_iron_ingot"},
 	}
 })
 
